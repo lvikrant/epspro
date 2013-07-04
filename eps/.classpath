@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="ETest/trunk/lib/opencsv-2.3/examples"/>
+	<classpathentry kind="src" path="ETest/trunk/lib/opencsv-2.3/src"/>
+	<classpathentry kind="src" path="ETest/trunk/lib/opencsv-2.3/test"/>
+	<classpathentry kind="src" path="ETest/trunk/src"/>
+	<classpathentry kind="lib" path="ETest/trunk/lib/guava-14.0.1.jar"/>
+	<classpathentry kind="lib" path="ETest/trunk/lib/guava-gwt-14.0.1.jar"/>
+	<classpathentry kind="lib" path="ETest/trunk/lib/opencsv-2.3/deploy/opencsv-2.3.jar"/>
+	<classpathentry kind="lib" path="ETest/trunk/lib/opencsv-2.3/lib/junit-4.7.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="ETest/trunk/bin"/>
+</classpath>
