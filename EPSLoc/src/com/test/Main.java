@@ -1,3 +1,5 @@
+package com.test;
+
 import com.espertech.esper.client.*;
 
 public class Main

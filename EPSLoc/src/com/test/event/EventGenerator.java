@@ -58,7 +58,7 @@ public class EventGenerator
 			
 			for(String s:list) {
 
-				gEvents = new GameEvents(Integer.parseInt();
+			//	gEvents = new GameEvents(Integer.parseInt();
 				cepRT.sendEvent(gEvents); 
 			}
 		}
@@ -124,7 +124,7 @@ public class EventGenerator
 
 	public void readTest()
 	{
-		CSVReader reader  = new CSVReader
+		//CSVReader reader  = new CSVReader
 	}
 	public static void main(String[] args) {
 

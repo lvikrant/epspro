@@ -1,3 +1,5 @@
+package com.test;
+
 import java.util.Date;
 import java.util.Random;
 import com.espertech.esper.client.*;
