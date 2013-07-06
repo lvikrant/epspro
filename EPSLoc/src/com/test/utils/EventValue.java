@@ -1,5 +1,8 @@
 package com.test.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class EventValue {
 
 	/**
@@ -9,11 +12,16 @@ public class EventValue {
 	 * 2: Ball Possession
 	 * 
 	 */
-
+	
+	
 	String event_name;
-	String event_time_real;
+	//String event_time_real;
 	int event_counter;
 	int comment;
+	Date time = new Date();
+	SimpleDateFormat format = new SimpleDateFormat("HH:mm:SS.SSS");
+	String event_time_real = format.format(time);
+	
 	public EventValue(String event_name, String event_time_real,
 			int event_counter, int comment) {
 		super();

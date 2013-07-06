@@ -122,7 +122,10 @@ public class EventGenerator
 
 	}
 
-
+	public void readTest()
+	{
+		CSVReader reader  = new CSVReader
+	}
 	public static void main(String[] args) {
 
 		SimpleLayout layout = new SimpleLayout();
