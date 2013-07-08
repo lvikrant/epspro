@@ -20,6 +20,8 @@ import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 import com.google.common.collect.Lists;
+import au.com.bytecode.opencsv.CSVReader;
+
 
 public class EventGenerator
 {
@@ -44,27 +46,36 @@ public class EventGenerator
 	static String event_time_real;
 	static int event_counter;
 	static String comment;
+	
+	//
+	static EventManager mgr = new EventManager();
+	
 
 	public static void generateEvents(EPRuntime cepRT)
 	{
-		List<List<String>> listOfLists = read_csv("Game_Interruption_1st_Half");
+		String cvsSplitBy = ";";
+		List<String[]> eventList= new ArrayList<String[]>();
+		//List<List<String>> listOfLists = read_csv("Game_Interruption_1st_Half");
 		//		GameMain game= new GameMain(sensor_id, timestamp, position_x, 
 		//				position_y, position_z, direction_vector, acceleration_vector, 
 		//				direction_x, direction_y, direction_z,
 		//				acceleration_x, acceleration_y, acceleration_z);
 		//		System.out.println("Sending tick:" + game);
 		GameEvents gEvents = new GameEvents(event_id, event_name, event_time_real, event_counter, comment);
-		for (List<String> list : listOfLists) {
-			
-			for(String s:list) {
-
-			//	gEvents = new GameEvents(Integer.parseInt();
-				cepRT.sendEvent(gEvents); 
+		
+		eventList = csvReader("Game_Interruption_1st_Half");
+		for(String[] s:eventList)
+		{
+			for(int i=0;i<s.length;i++)
+			{
+				
+			System.out.println("--> "+s[i]);
+			String arr[] = s[i].split(cvsSplitBy);
+			mgr.addEvent(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),Integer.parseInt( arr[4]));
 			}
 		}
-
-
-		//		cepRT.sendEvent(game);
+		cepRT.sendEvent(mgr); 
+		
 	}
 
 
@@ -79,9 +90,56 @@ public class EventGenerator
 
 
 
-	public static List<List<String>> read_csv(String file_name)
+	
+
+	public static List<String[]> csvReader(String fName)
 	{
-		String csvFile = "./"+file_name+".csv";
+		List<String[]> eventList= new ArrayList<String[]>();
+		try {
+			CSVReader reader  = new CSVReader(new FileReader("./src/com/test/resources/"+fName+".csv"));
+			eventList = reader.readAll();
+			 /*String [] nextLine;
+			    while ((nextLine = reader.readNext()) != null) {
+			        // nextLine[] is an array of values from the line
+			        //System.out.println(nextLine[0] + nextLine[1] + "etc...");
+			    	
+			    }*/
+			reader.close();
+			return eventList;
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static void main(String[] args) {
+
+		SimpleLayout layout = new SimpleLayout();
+		ConsoleAppender appender = new ConsoleAppender(new SimpleLayout());
+		Logger.getRootLogger().addAppender(appender);
+		Logger.getRootLogger().setLevel((Level) Level.WARN);
+
+		//The Configuration is meant only as an initialization-time object.
+		Configuration cepConfig = new Configuration();
+		cepConfig.addEventType("Game", GameMain.class.getName());
+		EPServiceProvider cep = EPServiceProviderManager.getProvider("myCEPEngine", cepConfig);
+		EPRuntime cepRT = cep.getEPRuntime();
+
+		EPAdministrator cepAdm = cep.getEPAdministrator();
+		EPStatement cepStatement = cepAdm.createEPL(
+				"select * from " +
+				"Game");
+		cepStatement.addListener(new EventListener());
+		generateEvents(cepRT);
+	}	
+	
+	
+	
+	/*public static List<List<String>> read_csv(String file_name)
+	{
+		String csvFile = "./src/com/test/resources/"+file_name+".csv";
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ";";
@@ -120,30 +178,5 @@ public class EventGenerator
 		}
 		return listOfLists;
 
-	}
-
-	public void readTest()
-	{
-		//CSVReader reader  = new CSVReader
-	}
-	public static void main(String[] args) {
-
-		SimpleLayout layout = new SimpleLayout();
-		ConsoleAppender appender = new ConsoleAppender(new SimpleLayout());
-		Logger.getRootLogger().addAppender(appender);
-		Logger.getRootLogger().setLevel((Level) Level.WARN);
-
-		//The Configuration is meant only as an initialization-time object.
-		Configuration cepConfig = new Configuration();
-		cepConfig.addEventType("Game", GameMain.class.getName());
-		EPServiceProvider cep = EPServiceProviderManager.getProvider("myCEPEngine", cepConfig);
-		EPRuntime cepRT = cep.getEPRuntime();
-
-		EPAdministrator cepAdm = cep.getEPAdministrator();
-		EPStatement cepStatement = cepAdm.createEPL(
-				"select * from " +
-				"Game");
-		cepStatement.addListener(new EventListener());
-		generateEvents(cepRT);
-	}	
+	}*/
 }
