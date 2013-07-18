@@ -6,7 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
@@ -20,11 +23,17 @@ import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 import com.google.common.collect.Lists;
+import com.test.utils.EventValue;
+
 import au.com.bytecode.opencsv.CSVReader;
 
 
-public class EventGenerator
+public class EventGenerator implements Runnable
 {
+	private EPRuntime cepRuntime = null;
+	private Random generator = new Random();
+	private Boolean stopGeneratingEvent = false;
+
 	static double sensor_id = 0;
 	static double timestamp = 0;
 	static int position_x = 0;
@@ -46,38 +55,40 @@ public class EventGenerator
 	static String event_time_real;
 	static int event_counter;
 	static String comment;
-	
+	static int type;
 	//
-	static EventManager mgr = new EventManager();
-	
+	static EventManager mgr;
 
-	public static void generateEvents(EPRuntime cepRT)
+	public EventGenerator() {
+
+		// The Configuration is meant only as an initialization-time object.
+		Configuration cepConfig = new Configuration();
+		cepConfig.addEventType("GameEvents", GameEvents.class.getName());
+
+		EPServiceProvider cep = EPServiceProviderManager.getProvider(
+				"myCEPEngine", cepConfig);
+		cepRuntime = cep.getEPRuntime();
+	}
+
+	/*public static void generateEvents(EPRuntime cepRT)
 	{
+		Map<Integer,EventValue> map = new HashMap<Integer,EventValue>();
 		String cvsSplitBy = ";";
 		List<String[]> eventList= new ArrayList<String[]>();
-		//List<List<String>> listOfLists = read_csv("Game_Interruption_1st_Half");
-		//		GameMain game= new GameMain(sensor_id, timestamp, position_x, 
-		//				position_y, position_z, direction_vector, acceleration_vector, 
-		//				direction_x, direction_y, direction_z,
-		//				acceleration_x, acceleration_y, acceleration_z);
-		//		System.out.println("Sending tick:" + game);
-		GameEvents gEvents = new GameEvents(event_id, event_name, event_time_real, event_counter, comment);
-		
 		eventList = csvReader("Game_Interruption_1st_Half");
 		for(String[] s:eventList)
 		{
 			for(int i=0;i<s.length;i++)
 			{
-				
-			System.out.println("--> "+s[i]);
-			String arr[] = s[i].split(cvsSplitBy);
-			mgr.addEvent(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),Integer.parseInt( arr[4]));
+				System.out.println("--> "+s[i]);
+				String arr[] = s[i].split(cvsSplitBy);
+				map.put(Integer.parseInt(arr[0]), new EventValue(arr[1], arr[2],Integer.parseInt( arr[3]),arr[4],0));
+				mgr = new EventManager(map);
+				//mgr.addEvent(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4],0);
 			}
 		}
-		cepRT.sendEvent(mgr); 
-		
-	}
-
+		cepRT.sendEvent(mgr);		
+	}*/
 
 	public void generateGameInterruption()
 	{}
@@ -88,33 +99,23 @@ public class EventGenerator
 	public void generateBallPossession()
 	{}
 
-
-
-	
-
 	public static List<String[]> csvReader(String fName)
 	{
 		List<String[]> eventList= new ArrayList<String[]>();
 		try {
 			CSVReader reader  = new CSVReader(new FileReader("./src/com/test/resources/"+fName+".csv"));
 			eventList = reader.readAll();
-			 /*String [] nextLine;
-			    while ((nextLine = reader.readNext()) != null) {
-			        // nextLine[] is an array of values from the line
-			        //System.out.println(nextLine[0] + nextLine[1] + "etc...");
-			    	
-			    }*/
 			reader.close();
-			return eventList;
-			
+			return eventList;			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			
+
 			e.printStackTrace();
 		}
 		return null;
 	}
-	public static void main(String[] args) {
+
+	/*public static void main(String[] args) {
 
 		SimpleLayout layout = new SimpleLayout();
 		ConsoleAppender appender = new ConsoleAppender(new SimpleLayout());
@@ -123,60 +124,53 @@ public class EventGenerator
 
 		//The Configuration is meant only as an initialization-time object.
 		Configuration cepConfig = new Configuration();
-		cepConfig.addEventType("Game", GameMain.class.getName());
+		cepConfig.addEventType("GameEvents", EventManager.class.getName());
+
 		EPServiceProvider cep = EPServiceProviderManager.getProvider("myCEPEngine", cepConfig);
 		EPRuntime cepRT = cep.getEPRuntime();
 
 		EPAdministrator cepAdm = cep.getEPAdministrator();
 		EPStatement cepStatement = cepAdm.createEPL(
 				"select * from " +
-				"Game");
+				"GameEvents");
 		cepStatement.addListener(new EventListener());
 		generateEvents(cepRT);
-	}	
-	
-	
-	
-	/*public static List<List<String>> read_csv(String file_name)
-	{
-		String csvFile = "./src/com/test/resources/"+file_name+".csv";
-		BufferedReader br = null;
-		String line = "";
-		String cvsSplitBy = ";";
-		String[] event = null ;
-		List<String> eventList= new ArrayList<String>();
-		List<List<String>> listOfLists = Lists.newArrayList();
-		try {	 
-			br = new BufferedReader(new FileReader(csvFile));
-			while ((line = br.readLine()) != null) {
-
-				// use comma as separator
-				event= line.split(cvsSplitBy);
-				eventList.add(line.split(cvsSplitBy).toString());
-
-				System.out.println("Event id= " + event[0] 
-						+ " , name=" + event[1] 
-								+ " , time=" + event[2] 
-										+ " , counter=" + event[3]
-												+ " , comment=" + event[4]
-						);
-				listOfLists.add(eventList);
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (br != null) {
-				try {
-					br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}			
-		}
-		return listOfLists;
-
 	}*/
+
+	@Override
+	public void run() {
+		while (!getStopGeneratingEvent()) {
+					
+			String cvsSplitBy = ";";
+			List<String[]> eventList= new ArrayList<String[]>();
+			eventList = csvReader("Game_Interruption_1st_Half");
+			GameEvents ge = null;;
+			for(String[] s:eventList)
+			{
+				for(int i=0;i<s.length;i++)
+				{
+					System.out.println("--> "+s[i]);
+					String arr[] = s[i].split(cvsSplitBy);
+					ge = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);									
+				}
+			}
+			
+			System.out.println("Sending event:" + ge);
+			cepRuntime.sendEvent(ge);
+
+			try {
+				Thread.sleep(generator.nextInt(3) * 1000);
+			} catch (InterruptedException e) {				
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public Boolean getStopGeneratingEvent() {
+		return stopGeneratingEvent;
+	}
+
+	public void setStopGeneratingEvent(Boolean stopGeneratingEvent) {
+		this.stopGeneratingEvent = stopGeneratingEvent;
+	}
 }

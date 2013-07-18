@@ -17,18 +17,20 @@ public class EventValue {
 	String event_name;
 	//String event_time_real;
 	int event_counter;
-	int comment;
+	String comment;
+	int type;
 	Date time = new Date();
 	SimpleDateFormat format = new SimpleDateFormat("HH:mm:SS.SSS");
 	String event_time_real = format.format(time);
 	
 	public EventValue(String event_name, String event_time_real,
-			int event_counter, int comment) {
+			int event_counter, String comment,int type) {
 		super();
 		this.event_name = event_name;
 		this.event_time_real = event_time_real;
 		this.event_counter = event_counter;
 		this.comment = comment;
+		this.type = type;
 	}
 	public String getEvent_name() {
 		return event_name;
@@ -48,10 +50,16 @@ public class EventValue {
 	public void setEvent_counter(int event_counter) {
 		this.event_counter = event_counter;
 	}
-	public int getComment() {
+	public String getComment() {
 		return comment;
 	}
-	public void setComment(int comment) {
+	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	public int getEvent_type() {
+		return type;
+	}
+	public void setEvent_type(int event_type) {
+		this.type = event_type;
 	}
 }

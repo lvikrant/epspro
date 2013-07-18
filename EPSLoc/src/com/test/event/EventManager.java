@@ -12,9 +12,14 @@ public class EventManager {
 	 */
 	Map<Integer,EventValue> map = new HashMap<Integer,EventValue>();
 
-	public void addEvent(int id, String event_name,	String event_time_real,	int event_counter,int type) {
+	public EventManager(Map<Integer, EventValue> map) {
+		super();
+		this.map = map;
+	}
+	
+	public void addEvent(int id, String event_name,	String event_time_real,	int event_counter,String comment,int type) {
 
-		map.put(id, new EventValue(event_name, event_time_real, event_counter, type));
+		map.put(id, new EventValue(event_name, event_time_real, event_counter,comment, type));
 	}
 
 	public void getEvent(){}
@@ -73,11 +78,26 @@ public class EventManager {
 			map.get(id).setEvent_counter(counter);
 		}
 	}
+	public String getEventComment(int id) {
 
-	public int getEventType(int id) {
 		if(map.containsKey(id))
 		{
 			return map.get(id).getComment();
+		}
+		return null;
+	}
+	
+	public void setEventComment(int id, String comment)
+	{
+		if(map.containsKey(id))
+		{
+			map.get(id).setComment(comment);
+		}
+	}
+	public int getEventType(int id) {
+		if(map.containsKey(id))
+		{
+			return map.get(id).getEvent_type();
 		}
 		return -1;
 	}
@@ -85,8 +105,13 @@ public class EventManager {
 	public void setEventType(int id, int type) {
 		if(map.containsKey(id))
 		{
-			map.get(id).setComment(type);
+			map.get(id).setEvent_type(type);
 		}
 	}	
-
+	
+	 /*  @Override
+	  public String toString() {
+	     return "ID: " + map.get.toString() + " time: " + timeStamp.toString();
+	    }
+*/
 }
