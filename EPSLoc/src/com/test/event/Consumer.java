@@ -24,7 +24,7 @@ public class Consumer {
      EventGenerator eventGenerator = new EventGenerator();
      eventGenerator.setStopGeneratingEvent(false);
      
-     Thread tickThread = new Thread(eventGenerator);
-     tickThread.start();
+     Thread gameThread = new Thread(eventGenerator);
+     gameThread.start();
     }
 }

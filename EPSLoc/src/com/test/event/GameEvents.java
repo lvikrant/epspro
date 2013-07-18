@@ -55,10 +55,8 @@ public class GameEvents {
 	  @Override
 	    public String toString() {
 	     return "Id: " + String.valueOf(event_id) + " Name: " + event_name.toString() +
-	    		 "Time: "+event_time_real.toString()+
-	    		 "Counter: "+String.valueOf(event_counter)+
-	    		 "Comment"+comment.toString();
+	    		 " Time: "+event_time_real.toString()+
+	    		 " Counter: "+String.valueOf(event_counter)+
+	    		 " Comment: "+comment.toString();
 	    }
-
-
 }

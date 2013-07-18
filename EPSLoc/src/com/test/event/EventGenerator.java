@@ -149,20 +149,22 @@ public class EventGenerator implements Runnable
 			{
 				for(int i=0;i<s.length;i++)
 				{
-					System.out.println("--> "+s[i]);
+					//System.out.println("--> "+s[i]);
 					String arr[] = s[i].split(cvsSplitBy);
-					ge = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);									
+					ge = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);
+					System.out.println("Sending event--> \n" + ge);
+					cepRuntime.sendEvent(ge);
 				}
 			}
 			
-			System.out.println("Sending event:" + ge);
-			cepRuntime.sendEvent(ge);
+			
 
 			try {
 				Thread.sleep(generator.nextInt(3) * 1000);
 			} catch (InterruptedException e) {				
 				e.printStackTrace();
 			}
+			setStopGeneratingEvent(true);
 		}
 	}
 
