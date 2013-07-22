@@ -107,8 +107,6 @@ public class EventGenerator implements Runnable
 			reader.close();
 			return eventList;			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-
 			e.printStackTrace();
 		}
 		return null;
@@ -117,7 +115,7 @@ public class EventGenerator implements Runnable
 	@Override
 	public void run() {
 		while (!getStopGeneratingEvent()) {
-					
+
 			String cvsSplitBy = ";";
 			List<String[]> eventList= new ArrayList<String[]>();
 			eventList = csvReader("Game_Interruption_1st_Half");
@@ -126,21 +124,19 @@ public class EventGenerator implements Runnable
 			{
 				for(int i=0;i<s.length;i++)
 				{
-					System.out.println("--> "+s[i]);
+					//System.out.println("--> "+s[i]);
 					String arr[] = s[i].split(cvsSplitBy);
 					ge = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);
-					
-					ge = new GameEvents(1, "test", "test", 1, "test");
-					System.out.println("Sending event--> \n" + ge);
+					System.out.println("Sending event--> \t" + ge);
 					cepRuntime.sendEvent(ge);
 				}
 			}
-						
+
 			/*ge = new GameEvents(1, "test", "test", 1, "test");
 			System.out.println("Sending event--> \n" + ge);
 			cepRuntime.sendEvent(ge);
 			 */
-			
+
 			try {
 				Thread.sleep(generator.nextInt(3) * 1000);
 			} catch (InterruptedException e) {				
