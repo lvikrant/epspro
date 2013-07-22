@@ -37,9 +37,11 @@ public class ExampleGen {
 
 		EPAdministrator cepAdm = cep.getEPAdministrator();
 		EPStatement cepStatement = cepAdm.createEPL("select * from " +
-				"StockTick(symbol='AAPL').win:length(2) " +
-				"having avg(price) > 6.0");
+				"StockTick");
 
+		//(symbol='AAPL').win:length(2) " +		"having avg(price) > 6.0")
+		
+		
 		cepStatement.addListener(new CEPListener());
 
 		// We generate a few ticks...

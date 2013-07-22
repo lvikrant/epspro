@@ -63,10 +63,9 @@ public class EventGenerator implements Runnable
 
 		// The Configuration is meant only as an initialization-time object.
 		Configuration cepConfig = new Configuration();
-		cepConfig.addEventType("GameEvents", GameEvents.class.getName());
-
-		EPServiceProvider cep = EPServiceProviderManager.getProvider(
-				"myCEPEngine", cepConfig);
+		cepConfig.addEventType("GameEventsTable", GameEvents.class.getName());
+		//System.out.println("Inside EventGenerator constructor");
+		EPServiceProvider cep = EPServiceProviderManager.getProvider("CEPEngine", cepConfig);
 		cepRuntime = cep.getEPRuntime();
 	}
 
@@ -115,28 +114,6 @@ public class EventGenerator implements Runnable
 		return null;
 	}
 
-	/*public static void main(String[] args) {
-
-		SimpleLayout layout = new SimpleLayout();
-		ConsoleAppender appender = new ConsoleAppender(new SimpleLayout());
-		Logger.getRootLogger().addAppender(appender);
-		Logger.getRootLogger().setLevel((Level) Level.WARN);
-
-		//The Configuration is meant only as an initialization-time object.
-		Configuration cepConfig = new Configuration();
-		cepConfig.addEventType("GameEvents", EventManager.class.getName());
-
-		EPServiceProvider cep = EPServiceProviderManager.getProvider("myCEPEngine", cepConfig);
-		EPRuntime cepRT = cep.getEPRuntime();
-
-		EPAdministrator cepAdm = cep.getEPAdministrator();
-		EPStatement cepStatement = cepAdm.createEPL(
-				"select * from " +
-				"GameEvents");
-		cepStatement.addListener(new EventListener());
-		generateEvents(cepRT);
-	}*/
-
 	@Override
 	public void run() {
 		while (!getStopGeneratingEvent()) {
@@ -149,21 +126,26 @@ public class EventGenerator implements Runnable
 			{
 				for(int i=0;i<s.length;i++)
 				{
-					//System.out.println("--> "+s[i]);
+					System.out.println("--> "+s[i]);
 					String arr[] = s[i].split(cvsSplitBy);
 					ge = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);
+					
+					ge = new GameEvents(1, "test", "test", 1, "test");
 					System.out.println("Sending event--> \n" + ge);
 					cepRuntime.sendEvent(ge);
 				}
 			}
+						
+			/*ge = new GameEvents(1, "test", "test", 1, "test");
+			System.out.println("Sending event--> \n" + ge);
+			cepRuntime.sendEvent(ge);
+			 */
 			
-			
-
 			try {
 				Thread.sleep(generator.nextInt(3) * 1000);
 			} catch (InterruptedException e) {				
 				e.printStackTrace();
-			}
+			}			
 			setStopGeneratingEvent(true);
 		}
 	}
