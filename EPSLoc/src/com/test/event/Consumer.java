@@ -18,13 +18,14 @@ public class Consumer {
      Logger.getRootLogger().addAppender(appender);
      Logger.getRootLogger().setLevel((Level) Level.WARN);
      
-     String table = "GameSensorTable";
-     String eventClass = "GameSensorEvents";
-     String fName = "g";
+     String table = "GameEventsTable";//"GameSensorTable";
+     String eventClass = "GameEvents";//"GameSensorEvents";
+     String fName = "Game_Interruption_1st_Half";//"sensor";
+     
      EventDescription interestedEvents = new EventDescription(table,eventClass);
      interestedEvents.createSelectEvent(table);
      
-     EventGenerator eventGenerator = new EventGenerator(fName);
+     EventGenerator eventGenerator = new EventGenerator(fName,eventClass,table);
      eventGenerator.setStopGeneratingEvent(false);
      
      Thread gameThread = new Thread(eventGenerator);

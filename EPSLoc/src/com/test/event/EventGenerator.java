@@ -31,7 +31,7 @@ import au.com.bytecode.opencsv.CSVReader;
 
 public class EventGenerator implements Runnable
 {
-	private EPRuntime cepRuntime = null;
+	private EPRuntime cepRuntime;
 	private Random generator = new Random();
 	private Boolean stopGeneratingEvent = false;
 
@@ -50,56 +50,59 @@ public class EventGenerator implements Runnable
 	static double acceleration_z= 0;
 
 	//GAME EVENTS
-
 	static int event_id;
 	static String event_name;
 	static String event_time_real;
 	static int event_counter;
 	static String comment;
-	
-	
-	static EventManager mgr;
+
 	CsvReader csvReader = new CsvReader();
 	String fileName=null;
 	String eventClass=null;
+	String eventTable = null;
 	String csvSplitBy = ";";
 	int eventFlag  = 0;
-	
+
 	GameEvents ge = null;
 	GameSensorEvents gsEvents= null;
-	
-	public EventGenerator(String fileName) {
+
+	public EventGenerator(String fileName,String eventClass, String eventTable ) {
 
 		this.fileName = fileName;
-		
-		if(fileName.contains("sensor"))
+		this.eventClass = eventClass;
+		this.eventTable = eventTable;
+		if(fileName.endsWith("sensor"))
 		{
 			csvSplitBy = ",";
+			eventFlag = 1;
 		}		
-		/*// The Configuration is meant only as an initialization-time object.
 		Configuration cepConfig = new Configuration();
-		cepConfig.addEventType("GameEventsTable", GameEvents.class.getName());
+		cepConfig.addEventType(eventTable,eventClass.getClass().getName());
 		EPServiceProvider cep = EPServiceProviderManager.getProvider("CEPEngine", cepConfig);
-		cepRuntime = cep.getEPRuntime();*/
+		cepRuntime = cep.getEPRuntime();
 	}
 
 	@Override
 	public void run() {
 		while (!getStopGeneratingEvent()) {
 
-			
 			List<String[]> eventList= new ArrayList<String[]>();
 			eventList = CsvReader.csvReader(fileName);
-			
+
 			for(String[] s:eventList)
 			{
 				for(int i=0;i<s.length;i++)
 				{					
 					String arr[] = s[i].split(csvSplitBy);
-					
-					if(arr.length>5)
-					{
-						gsEvents = new GameSensorEvents(Double.parseDouble(arr[0]),
+
+					if(arr.length>5 || eventFlag ==1)
+					{						
+						System.out.println("Split : "+csvSplitBy);
+						System.out.println("Array: "+arr.length);
+						for (String string : arr) {
+							System.out.println("array elements: "+string);
+						}
+						/*gsEvents = new GameSensorEvents(Double.parseDouble(arr[0]),
 								Double.parseDouble(arr[1]),
 								Double.parseDouble(arr[2]),
 								Double.parseDouble(arr[3]),
@@ -112,15 +115,15 @@ public class EventGenerator implements Runnable
 								Double.parseDouble(arr[10]),
 								Double.parseDouble(arr[11]),
 								Double.parseDouble(arr[12]));
-						
+
 						System.out.println("Sending event--> \t" + gsEvents);
-						cepRuntime.sendEvent(gsEvents);
+						cepRuntime.sendEvent(gsEvents);*/
 					}
-					
+
 					else {	
-					ge = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);
-					System.out.println("Sending event--> \t" + ge);
-					cepRuntime.sendEvent(ge);
+						ge = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);
+						System.out.println("Sending event--> \t" + ge);
+						cepRuntime.sendEvent(ge);
 					}
 				}
 			}			
