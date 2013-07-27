@@ -17,11 +17,14 @@ public class Consumer {
      ConsoleAppender appender = new ConsoleAppender(new SimpleLayout());
      Logger.getRootLogger().addAppender(appender);
      Logger.getRootLogger().setLevel((Level) Level.WARN);
-
-     EventDescription interestedEvents = new EventDescription();
-     interestedEvents.createSelectEvent();
      
-     EventGenerator eventGenerator = new EventGenerator();
+     String table = "GameSensorTable";
+     String eventClass = "GameSensorEvents";
+     String fName = "g";
+     EventDescription interestedEvents = new EventDescription(table,eventClass);
+     interestedEvents.createSelectEvent(table);
+     
+     EventGenerator eventGenerator = new EventGenerator(fName);
      eventGenerator.setStopGeneratingEvent(false);
      
      Thread gameThread = new Thread(eventGenerator);

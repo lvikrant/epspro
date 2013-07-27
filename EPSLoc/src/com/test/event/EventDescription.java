@@ -12,14 +12,18 @@ public class EventDescription {
 	private EPAdministrator cepAdm = null;
 	private static final String engineName = "CEPEngine";
 
-	public EventDescription() {
-		setUp("GameEventsTable");
+	public EventDescription() {		
+	}
+	
+	public EventDescription(String eventType, String eventClass) {
+		setUp(eventType,eventClass);
 	}
 
-	private void setUp(String eventType) {
-
+	private void setUp(String eventType, String eventClass) {
+		
+		
 		cepConfig = new Configuration();
-		cepConfig.addEventType(eventType, GameEvents.class.getName());
+		cepConfig.addEventType(eventType, eventClass.getClass().getName());
 
 		EPServiceProvider cep = EPServiceProviderManager.getProvider(EventDescription.engineName, cepConfig);
 
@@ -27,9 +31,9 @@ public class EventDescription {
 
 	}
 
-	public void createSelectEvent() {
+	public void createSelectEvent(String table) {
 
-		EPStatement cepStatement = cepAdm.createEPL("select * from GameEventsTable");
+		EPStatement cepStatement = cepAdm.createEPL("select * from "+table);
 
 		cepStatement.addListener(new EventListener());
 	} 

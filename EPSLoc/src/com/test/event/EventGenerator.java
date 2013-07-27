@@ -56,88 +56,74 @@ public class EventGenerator implements Runnable
 	static String event_time_real;
 	static int event_counter;
 	static String comment;
-	static int type;
-	//
+	
+	
 	static EventManager mgr;
 	CsvReader csvReader = new CsvReader();
-	public EventGenerator() {
+	String fileName=null;
+	String eventClass=null;
+	String csvSplitBy = ";";
+	int eventFlag  = 0;
+	
+	GameEvents ge = null;
+	GameSensorEvents gsEvents= null;
+	
+	public EventGenerator(String fileName) {
 
-		// The Configuration is meant only as an initialization-time object.
+		this.fileName = fileName;
+		
+		if(fileName.contains("sensor"))
+		{
+			csvSplitBy = ",";
+		}		
+		/*// The Configuration is meant only as an initialization-time object.
 		Configuration cepConfig = new Configuration();
 		cepConfig.addEventType("GameEventsTable", GameEvents.class.getName());
-		//System.out.println("Inside EventGenerator constructor");
 		EPServiceProvider cep = EPServiceProviderManager.getProvider("CEPEngine", cepConfig);
-		cepRuntime = cep.getEPRuntime();
+		cepRuntime = cep.getEPRuntime();*/
 	}
 
-	/*public static void generateEvents(EPRuntime cepRT)
-	{
-		Map<Integer,EventValue> map = new HashMap<Integer,EventValue>();
-		String cvsSplitBy = ";";
-		List<String[]> eventList= new ArrayList<String[]>();
-		eventList = csvReader("Game_Interruption_1st_Half");
-		for(String[] s:eventList)
-		{
-			for(int i=0;i<s.length;i++)
-			{
-				System.out.println("--> "+s[i]);
-				String arr[] = s[i].split(cvsSplitBy);
-				map.put(Integer.parseInt(arr[0]), new EventValue(arr[1], arr[2],Integer.parseInt( arr[3]),arr[4],0));
-				mgr = new EventManager(map);
-				//mgr.addEvent(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4],0);
-			}
-		}
-		cepRT.sendEvent(mgr);		
-	}*/
-
-	public void generateGameInterruption()
-	{}
-
-	public void generateShotOnGoal()
-	{}
-
-	public void generateBallPossession()
-	{}
-
-	/*public static List<String[]> csvReader(String fName)
-	{
-		List<String[]> eventList= new ArrayList<String[]>();
-		try {
-			CSVReader reader  = new CSVReader(new FileReader("./src/com/test/resources/"+fName+".csv"));
-			eventList = reader.readAll();
-			reader.close();
-			return eventList;			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-*/
 	@Override
 	public void run() {
 		while (!getStopGeneratingEvent()) {
 
-			String cvsSplitBy = ";";
+			
 			List<String[]> eventList= new ArrayList<String[]>();
-			eventList = csvReader.csvReader("Game_Interruption_1st_Half");
-			GameEvents ge = null;;
+			eventList = CsvReader.csvReader(fileName);
+			
 			for(String[] s:eventList)
 			{
 				for(int i=0;i<s.length;i++)
-				{
-					//System.out.println("--> "+s[i]);
-					String arr[] = s[i].split(cvsSplitBy);
+				{					
+					String arr[] = s[i].split(csvSplitBy);
+					
+					if(arr.length>5)
+					{
+						gsEvents = new GameSensorEvents(Double.parseDouble(arr[0]),
+								Double.parseDouble(arr[1]),
+								Double.parseDouble(arr[2]),
+								Double.parseDouble(arr[3]),
+								Double.parseDouble(arr[4]),
+								Double.parseDouble(arr[5]),
+								Double.parseDouble(arr[6]),
+								Double.parseDouble(arr[7]),
+								Double.parseDouble(arr[8]),
+								Double.parseDouble(arr[9]),
+								Double.parseDouble(arr[10]),
+								Double.parseDouble(arr[11]),
+								Double.parseDouble(arr[12]));
+						
+						System.out.println("Sending event--> \t" + gsEvents);
+						cepRuntime.sendEvent(gsEvents);
+					}
+					
+					else {	
 					ge = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);
 					System.out.println("Sending event--> \t" + ge);
 					cepRuntime.sendEvent(ge);
+					}
 				}
-			}
-
-			/*ge = new GameEvents(1, "test", "test", 1, "test");
-			System.out.println("Sending event--> \n" + ge);
-			cepRuntime.sendEvent(ge);
-			 */
-
+			}			
 			try {
 				Thread.sleep(generator.nextInt(3) * 1000);
 			} catch (InterruptedException e) {				
