@@ -23,6 +23,7 @@ import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 import com.espertech.esper.client.EPStatement;
 import com.google.common.collect.Lists;
+import com.test.utils.CsvReader;
 import com.test.utils.EventValue;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -58,7 +59,7 @@ public class EventGenerator implements Runnable
 	static int type;
 	//
 	static EventManager mgr;
-
+	CsvReader csvReader = new CsvReader();
 	public EventGenerator() {
 
 		// The Configuration is meant only as an initialization-time object.
@@ -98,7 +99,7 @@ public class EventGenerator implements Runnable
 	public void generateBallPossession()
 	{}
 
-	public static List<String[]> csvReader(String fName)
+	/*public static List<String[]> csvReader(String fName)
 	{
 		List<String[]> eventList= new ArrayList<String[]>();
 		try {
@@ -111,14 +112,14 @@ public class EventGenerator implements Runnable
 		}
 		return null;
 	}
-
+*/
 	@Override
 	public void run() {
 		while (!getStopGeneratingEvent()) {
 
 			String cvsSplitBy = ";";
 			List<String[]> eventList= new ArrayList<String[]>();
-			eventList = csvReader("Game_Interruption_1st_Half");
+			eventList = csvReader.csvReader("Game_Interruption_1st_Half");
 			GameEvents ge = null;;
 			for(String[] s:eventList)
 			{
