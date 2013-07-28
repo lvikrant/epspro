@@ -1,4 +1,4 @@
-package com.test.event;
+/*package com.test.event;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
@@ -18,17 +18,17 @@ public class Consumer {
      Logger.getRootLogger().addAppender(appender);
      Logger.getRootLogger().setLevel((Level) Level.WARN);
      
-     String table = "GameEventsTable";//"GameSensorTable";
+     String eventTable = "GameEventsTable";//"GameSensorTable";
      String eventClass = "GameEvents";//"GameSensorEvents";
      String fName = "Game_Interruption_1st_Half";//"sensor";
      
-     EventDescription interestedEvents = new EventDescription(table,eventClass);
-     interestedEvents.createSelectEvent(table);
+     EventDescription interestedEvents = new EventDescription(eventTable,eventClass);
+     interestedEvents.createSelectEvent(eventTable);
      
-     EventGenerator eventGenerator = new EventGenerator(fName,eventClass,table);
+     EventGenerator eventGenerator = new EventGenerator(fName,eventClass,eventTable);
      eventGenerator.setStopGeneratingEvent(false);
      
      Thread gameThread = new Thread(eventGenerator);
      gameThread.start();
     }
-}
+}*/

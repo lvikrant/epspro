@@ -1,4 +1,4 @@
-package com.test.event;
+/*package com.test.event;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -64,28 +64,30 @@ public class EventGenerator implements Runnable
 	int eventFlag  = 0;
 
 	GameEvents ge = null;
-	GameSensorEvents gsEvents= null;
-
+	//GameSensorEvents gsEvents= null;
+	Configuration cepConfig = new Configuration();
+	
 	public EventGenerator(String fileName,String eventClass, String eventTable ) {
 
 		this.fileName = fileName;
 		this.eventClass = eventClass;
 		this.eventTable = eventTable;
-		if(fileName.endsWith("sensor"))
-		{
+		
+		if(fileName.endsWith("sensor")) {
+			
 			csvSplitBy = ",";
 			eventFlag = 1;
-		}		
-		Configuration cepConfig = new Configuration();
-		cepConfig.addEventType(eventTable,eventClass.getClass().getName());
-		EPServiceProvider cep = EPServiceProviderManager.getProvider("CEPEngine", cepConfig);
-		cepRuntime = cep.getEPRuntime();
+		}	
+		//System.out.println("Class: "+eventClass);	
 	}
 
 	@Override
 	public void run() {
 		while (!getStopGeneratingEvent()) {
-
+			
+			cepConfig.addEventType(eventTable,eventClass.getClass().getName());
+			EPServiceProvider cep = EPServiceProviderManager.getProvider("CEPEngine", cepConfig);
+			cepRuntime = cep.getEPRuntime();
 			List<String[]> eventList= new ArrayList<String[]>();
 			eventList = CsvReader.csvReader(fileName);
 
@@ -102,7 +104,7 @@ public class EventGenerator implements Runnable
 						for (String string : arr) {
 							System.out.println("array elements: "+string);
 						}
-						/*gsEvents = new GameSensorEvents(Double.parseDouble(arr[0]),
+						gsEvents = new GameSensorEvents(Double.parseDouble(arr[0]),
 								Double.parseDouble(arr[1]),
 								Double.parseDouble(arr[2]),
 								Double.parseDouble(arr[3]),
@@ -117,7 +119,7 @@ public class EventGenerator implements Runnable
 								Double.parseDouble(arr[12]));
 
 						System.out.println("Sending event--> \t" + gsEvents);
-						cepRuntime.sendEvent(gsEvents);*/
+						cepRuntime.sendEvent(gsEvents);
 					}
 
 					else {	
@@ -143,4 +145,4 @@ public class EventGenerator implements Runnable
 	public void setStopGeneratingEvent(Boolean stopGeneratingEvent) {
 		this.stopGeneratingEvent = stopGeneratingEvent;
 	}
-}
+}*/

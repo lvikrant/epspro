@@ -8,32 +8,23 @@ import com.espertech.esper.client.EPStatement;
 
 public class EventDescription {
 
-	private Configuration cepConfig = null;
-	private EPAdministrator cepAdm = null;
-	private static final String engineName = "CEPEngine";
-	String eventType;
-	String eventClass;
-	
-	public EventDescription() {		
-	}
-	
-	public EventDescription(String eventType, String eventClass) {
-		this.eventType = eventType;
-		this.eventClass = eventClass;
-		setUp(eventType,eventClass);		
-	}
+    private Configuration cepConfig = null;
+    private EPAdministrator cepAdm = null;
+    private static final String engineName = "CEPEngine";
 
-	private void setUp(String eventType, String eventClass) {
-				
-		cepConfig = new Configuration();
-		cepConfig.addEventType(eventType, eventClass.getClass().getName());
-		EPServiceProvider cep = EPServiceProviderManager.getProvider(EventDescription.engineName, cepConfig);
-		cepAdm = cep.getEPAdministrator();
-	}
+    public EventDescription() {
+     setUp("Game");
+    }
 
-	public void createSelectEvent(String table) {
+    private void setUp(String eventType) {
 
-		EPStatement cepStatement = cepAdm.createEPL("select * from "+table);
-		cepStatement.addListener(new EventListener());
-	} 
+     cepConfig = new Configuration();
+     cepConfig.addEventType(eventType, GameEvents.class.getName());
+     
+     EPServiceProvider cep = EPServiceProviderManager.getProvider(
+       EventDescription.engineName, cepConfig);
+
+     cepAdm = cep.getEPAdministrator();    
+
+    }
 }
