@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Users/vikaram/ep_workspace/esper-4.9.0/esper/lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="C:/Users/vikaram/ep_workspace/esper-4.9.0/esper/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="C:/Users/vikaram/ep_workspace/EPSFinal/lib/openCSV.jar"/>
+	<classpathentry kind="lib" path="C:/Users/vikaram/ep_workspace/google-gson-2.2.4/gson-2.2.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
