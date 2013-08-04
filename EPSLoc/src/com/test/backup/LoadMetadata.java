@@ -1,77 +1,118 @@
-package com.test.backup;
+/*package com.test.backup;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Iterator;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 
 
 public class LoadMetadata {
-
-
-	public LoadMetadata()
+	static String key;
+    static String[] fields;
+    static GameMetadata gm;
+	
+    public LoadMetadata()
 	{
-
-
+		 String key = "id";
+	     String[] fields = "id,pid,type".split(",");
+	     gm = new GameMetadata();
+	}
+	public static void main(String[] args)
+	{
 		JsonReader jsonReader;
+		
 		try {
-			jsonReader = new JsonReader(new FileReader("jsonFile.json"));
-		
 
-		jsonReader.beginObject();
+			JSONParser p = new JSONParser();
+			BufferedReader reader = new BufferedReader(new FileReader("./src/com/test/resources/metadata.json"));
+			for(String line = reader.readLine(); line != null; line = reader.readLine())
+			{
 
-		while (jsonReader.hasNext()) {
-
-			String name = jsonReader.nextName();
-			if (name.equals("descriptor")) {
-				readApp(jsonReader);
-
+				JSONObject obj = (JSONObject)p.parse(line);
+				Iterator i$ = obj.keySet().iterator();
+				do
+				{
+					if(!i$.hasNext())
+						break;
+					String key = (String)i$.next();
+					if(!"id".equals(key) && !contains(key))
+						System.out.println("Skipping meta-data field '{}'"+ key);
+					else
+						if(key.equals("type"))
+						{
+							if(obj.get(key).toString().equals("left leg"))
+							{
+								meta.put(key, EventType.LeftLeg);
+								meta.put("leg", Integer.valueOf(0));
+							} else
+								if(obj.get(key).toString().equals("right leg"))
+								{
+									meta.put(key, EventType.RightLeg);
+									meta.put("leg", Integer.valueOf(1));
+								} else
+									if(obj.get(key).toString().indexOf("all") >= 0)
+										meta.put(key, EventType.Ball);
+						} else
+						{
+							try
+							{
+								meta.put(key, new Integer((new StringBuilder()).append(obj.get(key)).append("").toString()));
+							}
+							catch(Exception e)
+							{
+								meta.put(key, (Serializable)obj.get(key));
+							}
+						}
+				} while(true);
+				System.out.println("Adding {}"+ meta);
+				Integer k = new Integer(((Serializable)meta.get(this.key)).toString());
+				if(k != null)
+				{
+					System.out.println("Adding meta-data for key '{}'"+k);
+					metaData.put(k, meta);
+				}
 			}
-		}
-		jsonReader.endObject();
-		jsonReader.close();
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
+			reader.close();
+
+
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
-	
 	}
 
 
-	public static void readApp(JsonReader jsonReader) throws IOException{
-		jsonReader.beginObject();
-		while (jsonReader.hasNext()) {
-			String name = jsonReader.nextName();
-			System.out.println(name);
-			if (name.contains("app")){
-				jsonReader.beginObject();
-				while (jsonReader.hasNext()) {
-					String n = jsonReader.nextName();
-					if (n.equals("name")){
-						System.out.println(jsonReader.nextString());
-					}
-					if (n.equals("age")){
-						System.out.println(jsonReader.nextInt());
-					}
-					if (n.equals("messages")){
-						jsonReader.beginArray();
-						while  (jsonReader.hasNext()) {
-							System.out.println(jsonReader.nextString());
-						}
-						jsonReader.endArray();
-					}
-				}
-				jsonReader.endObject();
-			}
 
+
+	protected static boolean contains(String f)
+	{
+		if(fields == null)
+			return true;
+		String arr$[] = fields;
+		int len$ = arr$.length;
+		for(int i$ = 0; i$ < len$; i$++)
+		{
+			String field = arr$[i$];
+			if(field.equals(f))
+				return true;
 		}
-		jsonReader.endObject();
+
+		return false;
 	}
 }
-/*public void init()
+
+public void init()
 	{
 	try {
 
@@ -82,4 +123,5 @@ public class LoadMetadata {
 	} catch (IOException e) {
 		e.printStackTrace();
 	}
-	}*/
+	}
+*/

@@ -1,0 +1,42 @@
+{pid:1,id:13,player:1,team:"A",name:"Nick Gertje",type:"left leg"}
+{pid:1,id:14,player:1,team:"A",name:"Nick Gertje",type:"right leg"}
+{pid:1,id:97,player:1,team:"A",name:"Nick Gertje",type:"left arm"}
+{pid:1,id:98,player:1,team:"A",name:"Nick Gertje",type:"right arm"}
+{pid:3,id:47,player:2,team:"A",name:"Dennis Dotterweich",type:"left leg"}
+{pid:3,id:16,player:2,team:"A",name:"Dennis Dotterweich",type:"right leg"}
+{pid:5,id:49,player:3,team:"A",name:"Niklas Waelzlein",type:"left leg"}
+{pid:5,id:88,player:3,team:"A",name:"Niklas Waelzlein",type:"right leg"}
+{pid:7,id:19,player:4,team:"A",name:"Wili Sommer",type:"left leg"}
+{pid:7,id:52,player:4,team:"A",name:"Wili Sommer",type:"right leg"}
+{pid:9,id:53,player:5,team:"A",name:"Philipp Harlass",type:"left leg"}
+{pid:9,id:54,player:5,team:"A",name:"Philipp Harlass",type:"right leg"}
+{pid:11,id:23,player:6,team:"A",name:"Roman Hartleb",type:"left leg"}
+{pid:11,id:24,player:6,team:"A",name:"Roman Hartleb",type:"right leg"}
+{pid:13,id:57,player:7,team:"A",name:"Erik Engelhardt",type:"left leg"}
+{pid:13,id:58,player:7,team:"A",name:"Erik Engelhardt",type:"right leg"}
+{pid:15,id:59,player:8,team:"A",name:"Sandro Schneider",type:"left leg"}
+{pid:15,id:28,player:8,team:"A",name:"Sandro Schneider",type:"right leg"}
+{pid:2,id:61,player:1,team:"B",name:"Leon Krapf",type:"left leg"}
+{pid:2,id:62,player:1,team:"B",name:"Leon Krapf",type:"right leg"}
+{pid:2,id:99,player:1,team:"B",name:"Leon Krapf",type:"left arm"}
+{pid:2,id:100,player:1,team:"B",name:"Leon Krapf",type:"right arm"}
+{pid:4,id:63,player:2,team:"B",name:"Kevin Baer",type:"left leg"}
+{pid:4,id:64,player:2,team:"B",name:"Kevin Baer",type:"right leg"}
+{pid:6,id:65,player:3,team:"B",name:"Luca Ziegler",type:"left leg"}
+{pid:6,id:66,player:3,team:"B",name:"Luca Ziegler",type:"right leg"}
+{pid:8,id:67,player:4,team:"B",name:"Ben Mueller",type:"left leg"}
+{pid:8,id:68,player:4,team:"B",name:"Ben Mueller",type:"right leg"}
+{pid:10,id:69,player:5,team:"B",name:"Vale Reitstetter",type:"left leg"}
+{pid:10,id:38,player:5,team:"B",name:"Vale Reitstetter",type:"right leg"}
+{pid:12,id:71,player:6,team:"B",name:"Christopher Lee",type:"left leg"}
+{pid:12,id:40,player:6,team:"B",name:"Christopher Lee",type:"right leg"}
+{pid:14,id:73,player:7,team:"B",name:"Leon Heinze",type:"left leg"}
+{pid:14,id:74,player:7,team:"B",name:"Leon Heinze",type:"right leg"}
+{pid:16,id:75,player:8,team:"B",name:"Leo Langhans",type:"left leg"}
+{pid:16,id:44,player:8,team:"B",name:"Leo Langhans",type:"right leg"}
+{pid:0,id:105,player:0,team:"R",name:"Referee",type:"left leg"}
+{pid:0,id:106,player:0,team:"R",name:"Referee",type:"right leg"}
+{pid:-1,id:4,player:4,team:"Ball",name:"Ball",type:"Ball"}
+{pid:-2,id:8,player:8,team:"Ball",name:"Ball",type:"Ball"}
+{pid:-3,id:10,player:10,team:"Ball",name:"Ball",type:"Ball"}
+{pid:-4,id:12,player:12,team:"Ball",name:"Ball",type:"Ball"}
