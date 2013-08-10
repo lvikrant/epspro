@@ -20,7 +20,8 @@ public class EventDescription {
 
 		cepConfig = new Configuration();
 		//cepConfig.addEventType(eventType, GameEvents.class.getName());
-		cepConfig.addEventType(eventType, GameSensorEvents.class.getName());
+		//cepConfig.addEventType(eventType, GameSensorEvents.class.getName());
+		cepConfig.addEventType(eventType, GameMetadata.class.getName());
 
 		EPServiceProvider cep = EPServiceProviderManager.getProvider(
 				EventDescription.engineName, cepConfig);

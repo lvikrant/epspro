@@ -41,15 +41,16 @@ public class EventGenerator implements Runnable {
 	private Random generator = new Random();
 	private Boolean stopGeneratingEvent = false;
 	GameSensorEvents gsEvents= null;
+	GameMetadata gMeta;
 	public EventGenerator() {
 
 		// The Configuration is meant only as an initialization-time object.
 		Configuration cepConfig = new Configuration();
 		//cepConfig.addEventType("Game", GameEvents.class.getName());
-		cepConfig.addEventType("Game", GameSensorEvents.class.getName());
+		//cepConfig.addEventType("Game", GameSensorEvents.class.getName());
+		cepConfig.addEventType("Game", GameMetadata.class.getName());
 		
-		EPServiceProvider cep = EPServiceProviderManager.getProvider(
-				"CEPEngine", cepConfig);
+		EPServiceProvider cep = EPServiceProviderManager.getProvider("CEPEngine", cepConfig);
 		cepRuntime = cep.getEPRuntime();
 	}
 
@@ -59,15 +60,25 @@ public class EventGenerator implements Runnable {
 		while (!getStopGeneratingEvent()) {
 			List<String[]> eventList= new ArrayList<String[]>();
 			//eventList = CsvReader.csvReader("Game_Interruption_1st_Half");
-			eventList = CsvReader.csvReader("sensor");
-
+			//eventList = CsvReader.csvReader("sensor");
+			eventList = CsvReader.csvReader("metadata");
+			
 			for(String[] s:eventList)
 			{
 				for(int i=0;i<s.length;i++)
 				{					
 					String arr[] = s[i].split(";");
 					
-					gsEvents = new GameSensorEvents(Double.parseDouble(arr[0]),
+					gMeta =  new GameMetadata(Integer.parseInt(arr[0]),
+							Integer.parseInt(arr[1]), 
+							Integer.parseInt(arr[2]),
+							arr[3],
+							arr[4],
+							arr[5]);
+					System.out.println("Sending event--> \t" + gMeta);
+					cepRuntime.sendEvent(gMeta);
+					
+					/*gsEvents = new GameSensorEvents(Double.parseDouble(arr[0]),
 							Double.parseDouble(arr[1]),
 							Double.parseDouble(arr[2]),
 							Double.parseDouble(arr[3]),
@@ -82,7 +93,7 @@ public class EventGenerator implements Runnable {
 							Double.parseDouble(arr[12]));
 
 					System.out.println("Sending event--> \t" + gsEvents);
-					cepRuntime.sendEvent(gsEvents);
+					cepRuntime.sendEvent(gsEvents);*/
 					/*GameEvents ge  = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);									
 					System.out.println("Sending tick:" + ge);
 					cepRuntime.sendEvent(ge);

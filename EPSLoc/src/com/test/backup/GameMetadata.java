@@ -24,6 +24,15 @@ public class GameMetadata {
 		map.put(pid, new MetadataValue(id, player_id, team, name, type));
 	}
 
+	public GameMetadata(int pid,int id,int player_id,String team,String name,String type)
+	{
+		this.pid = pid;
+		this.id= id;
+		this.player_id = player_id;
+		this.team = team;
+		this.name = name;
+		this.type = type;		
+	}
 
 	public int getPid() {
 		return pid;
@@ -120,10 +129,17 @@ public class GameMetadata {
 	public String toString() {
 		
 		return "Process_Id: " + String.valueOf(pid) +
-				"ID: " + String.valueOf(map.get(pid).getId())+
+				/*"ID: " + String.valueOf(map.get(pid).getId())+
 				"Player_ID: " + String.valueOf(map.get(pid).getPlayer_id())+
 				"Team_name: " + map.get(pid).getTeam()+
 				"Name: " + map.get(pid).getName()+
-				"Type: " + map.get(pid).getType();			
+				"Type: " + map.get(pid).getType();*/	
+		"ID: " + String.valueOf(id)+
+		"Player_ID: " + String.valueOf(player_id)+
+		"Team_name: " + team+
+		"Name: " + name+
+		"Type: " + type;	
+		
+				
 	}
 }
