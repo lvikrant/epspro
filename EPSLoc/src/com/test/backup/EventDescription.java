@@ -20,8 +20,8 @@ public class EventDescription {
 
 		cepConfig = new Configuration();
 		//cepConfig.addEventType(eventType, GameEvents.class.getName());
-		//cepConfig.addEventType(eventType, GameSensorEvents.class.getName());
-		cepConfig.addEventType(eventType, GameMetadata.class.getName());
+		cepConfig.addEventType(eventType, GameSensorEvents.class.getName());
+		//cepConfig.addEventType(eventType, GameMetadata.class.getName());
 
 		EPServiceProvider cep = EPServiceProviderManager.getProvider(
 				EventDescription.engineName, cepConfig);
@@ -33,7 +33,10 @@ public class EventDescription {
 	public void createSelectEvent() {
 
 		EPStatement cepStatement = cepAdm.createEPL("select * from Game");
-				
+
+		/*EPStatement cepStatement = cepAdm.createEPL("INSERT INTO metadata "+
+				"SELECT pid,id,player,team,name,type as gamemetadata" +
+				"FROM Game ");*/
 		cepStatement.addListener(new EventListener());
 	} 
 }

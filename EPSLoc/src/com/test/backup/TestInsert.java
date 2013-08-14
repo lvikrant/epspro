@@ -35,21 +35,18 @@ import com.espertech.esper.client.EPRuntime;
 import com.espertech.esper.client.EPServiceProvider;
 import com.espertech.esper.client.EPServiceProviderManager;
 
-public class EventGenerator implements Runnable {
+public class TestInsert implements Runnable {
 
 	private EPRuntime cepRuntime = null;
 	private Random generator = new Random();
 	private Boolean stopGeneratingEvent = false;
 	GameSensorEvents gsEvents= null;
 	GameMetadata gMeta;
-	public EventGenerator() {
+	public TestInsert() {
 
-		// The Configuration is meant only as an initialization-time object.
 		Configuration cepConfig = new Configuration();
-		//cepConfig.addEventType("Game", GameEvents.class.getName());
-		//cepConfig.addEventType("Game", GameSensorEvents.class.getName());
 		cepConfig.addEventType("Game", GameMetadata.class.getName());
-		
+
 		EPServiceProvider cep = EPServiceProviderManager.getProvider("CEPEngine", cepConfig);
 		cepRuntime = cep.getEPRuntime();
 	}
@@ -59,44 +56,22 @@ public class EventGenerator implements Runnable {
 
 		while (!getStopGeneratingEvent()) {
 			List<String[]> eventList= new ArrayList<String[]>();
-			//eventList = CsvReader.csvReader("Game_Interruption_1st_Half");
-			eventList = CsvReader.csvReader("sensor");
-			//eventList = CsvReader.csvReader("metadata");
-			
+			eventList = CsvReader.csvReader("metadata");
+
 			for(String[] s:eventList)
 			{
 				for(int i=0;i<s.length;i++)
 				{					
 					String arr[] = s[i].split(";");
-					
-					/*gMeta =  new GameMetadata(Integer.parseInt(arr[0]),
+
+					gMeta =  new GameMetadata(Integer.parseInt(arr[0]),
 							Integer.parseInt(arr[1]), 
 							Integer.parseInt(arr[2]),
 							arr[3],
 							arr[4],
 							arr[5]);
 					System.out.println("Sending event--> \t" + gMeta);
-					cepRuntime.sendEvent(gMeta);*/
-					
-					gsEvents = new GameSensorEvents(Double.parseDouble(arr[0]),
-							Double.parseDouble(arr[1]),
-							Double.parseDouble(arr[2]),
-							Double.parseDouble(arr[3]),
-							Double.parseDouble(arr[4]),
-							Double.parseDouble(arr[5]),
-							Double.parseDouble(arr[6]),
-							Double.parseDouble(arr[7]),
-							Double.parseDouble(arr[8]),
-							Double.parseDouble(arr[9]),
-							Double.parseDouble(arr[10]),
-							Double.parseDouble(arr[11]),
-							Double.parseDouble(arr[12]));
-
-					System.out.println("Sending event--> \t" + gsEvents);
-					cepRuntime.sendEvent(gsEvents);
-					GameEvents ge  = new GameEvents(Integer.parseInt(arr[0]), arr[1], arr[2],Integer.parseInt( arr[3]),arr[4]);									
-					System.out.println("Sending tick:" + ge);
-					cepRuntime.sendEvent(ge);
+					cepRuntime.sendEvent(gMeta);
 
 					try {
 						Thread.sleep(generator.nextInt(3) * 1000);
