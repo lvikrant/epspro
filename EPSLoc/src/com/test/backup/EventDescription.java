@@ -32,11 +32,11 @@ public class EventDescription {
 
 	public void createSelectEvent() {
 
-		EPStatement cepStatement = cepAdm.createEPL("select * from Game");
+		//EPStatement cepStatement = cepAdm.createEPL("select * from Game");
 
-		/*EPStatement cepStatement = cepAdm.createEPL("INSERT INTO metadata "+
+		EPStatement cepStatement = cepAdm.createEPL("INSERT INTO metadata "+
 				"SELECT pid,id,player,team,name,type as gamemetadata" +
-				"FROM Game ");*/
+				"FROM Game ");
 		cepStatement.addListener(new EventListener());
 	} 
 }

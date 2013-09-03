@@ -12,11 +12,11 @@ public class EventManager implements IEventManager {
 	private Configuration cepConfig = null;
 	private EPAdministrator cepAdm = null;
 	private static final String engineName = "CEPEngine";
-	
+
 	@Override
 	public void eventInit(String eventType) {
 		// TODO Auto-generated method stub
-		
+
 		cepConfig = new Configuration();
 		//cepConfig.addEventType(eventType, GameEvents.class.getName());
 		cepConfig.addEventType(eventType, GameSensorEvents.class.getName());
@@ -24,10 +24,6 @@ public class EventManager implements IEventManager {
 
 		EPServiceProvider cep = EPServiceProviderManager.getProvider(
 				engineName, cepConfig);
-
-		cepAdm = cep.getEPAdministrator();    
-
-		
+		cepAdm = cep.getEPAdministrator();	
 	}
-
 }
